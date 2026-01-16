@@ -116,6 +116,8 @@ type LayoutNodesOptions = {
   tabletNavTab: "codex" | "git" | "log";
   gitPanelMode: "diff" | "log" | "issues";
   onGitPanelModeChange: (mode: "diff" | "log" | "issues") => void;
+  filePanelMode: "git" | "files";
+  onToggleFilePanel: () => void;
   gitStatus: {
     branchName: string;
     files: GitFileStatus[];
