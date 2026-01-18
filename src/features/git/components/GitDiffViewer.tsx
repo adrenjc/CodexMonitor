@@ -95,7 +95,6 @@ const DiffCard = memo(function DiffCard({
           <FileDiff
             fileDiff={fileDiff}
             options={diffOptions}
-            className="diff-viewer-diffs"
             style={{ width: "100%", maxWidth: "100%", minWidth: 0 }}
           />
         </div>
@@ -135,6 +134,18 @@ export function GitDiffViewer({
     overscan: 6,
   });
   const virtualItems = rowVirtualizer.getVirtualItems();
+  const stickyEntry = useMemo(() => {
+    if (!diffs.length) {
+      return null;
+    }
+    if (selectedPath) {
+      const index = indexByPath.get(selectedPath);
+      if (index !== undefined) {
+        return diffs[index];
+      }
+    }
+    return diffs[0];
+  }, [diffs, selectedPath, indexByPath]);
 
   useEffect(() => {
     if (!selectedPath) {
@@ -210,6 +221,19 @@ export function GitDiffViewer({
       highlighterOptions={highlighterOptions}
     >
       <div className="diff-viewer" ref={containerRef}>
+        {!error && stickyEntry && (
+          <div className="diff-viewer-sticky">
+            <div className="diff-viewer-header diff-viewer-header-sticky">
+              <span
+                className="diff-viewer-status"
+                data-status={stickyEntry.status}
+              >
+                {stickyEntry.status}
+              </span>
+              <span className="diff-viewer-path">{stickyEntry.path}</span>
+            </div>
+          </div>
+        )}
         {error && <div className="diff-viewer-empty">{error}</div>}
         {!error && isLoading && diffs.length > 0 && (
           <div className="diff-viewer-loading diff-viewer-loading-overlay">
@@ -235,7 +259,7 @@ export function GitDiffViewer({
                   data-index={virtualRow.index}
                   ref={rowVirtualizer.measureElement}
                   style={{
-                    top: virtualRow.start,
+                    transform: `translate3d(0, ${virtualRow.start}px, 0)`,
                   }}
                 >
                   <DiffCard
