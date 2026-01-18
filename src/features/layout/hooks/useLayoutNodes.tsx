@@ -162,6 +162,7 @@ type LayoutNodesOptions = {
   gitPullRequestsLoading: boolean;
   gitPullRequestsError: string | null;
   selectedPullRequestNumber: number | null;
+  selectedPullRequest: GitHubPullRequest | null;
   onSelectPullRequest: (pullRequest: GitHubPullRequest) => void;
   gitRemoteUrl: string | null;
   gitRoot: string | null;
@@ -504,6 +505,7 @@ export function useLayoutNodes(options: LayoutNodesOptions): LayoutNodesResult {
       selectedPath={options.selectedDiffPath}
       isLoading={options.gitDiffLoading}
       error={options.gitDiffError}
+      pullRequest={options.selectedPullRequest}
       onActivePathChange={options.onDiffActivePathChange}
     />
   );
