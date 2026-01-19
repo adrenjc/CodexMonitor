@@ -103,7 +103,6 @@ export function WorktreeSection({
             threadListPagingByWorkspace[worktree.id] ?? false;
           const isWorktreeExpanded = expandedWorkspaces.has(worktree.id);
           const {
-            pinnedRows: worktreePinnedRows,
             unpinnedRows: worktreeThreadRows,
             totalRoots: totalWorktreeRoots,
           } = getThreadRows(
@@ -126,7 +125,7 @@ export function WorktreeSection({
               {showWorktreeThreads && (
                 <ThreadList
                   workspaceId={worktree.id}
-                  pinnedRows={worktreePinnedRows}
+                  pinnedRows={[]}
                   unpinnedRows={worktreeThreadRows}
                   totalThreadRoots={totalWorktreeRoots}
                   isExpanded={isWorktreeExpanded}

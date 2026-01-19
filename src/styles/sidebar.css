@@ -382,6 +382,13 @@
   margin-left: 0;
 }
 
+.pinned-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
 .thread-list-nested {
   margin-left: 16px;
 }

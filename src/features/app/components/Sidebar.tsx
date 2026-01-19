@@ -7,6 +7,7 @@ import { SidebarHeader } from "./SidebarHeader";
 import { ThreadList } from "./ThreadList";
 import { ThreadLoading } from "./ThreadLoading";
 import { WorktreeSection } from "./WorktreeSection";
+import { PinnedThreadList } from "./PinnedThreadList";
 import { WorkspaceCard } from "./WorkspaceCard";
 import { WorkspaceGroup } from "./WorkspaceGroup";
 import { useCollapsedGroups } from "../hooks/useCollapsedGroups";
@@ -141,6 +142,66 @@ export function Sidebar({
     showWeekly,
   } = getUsageLabels(accountRateLimits);
 
+  const pinnedThreadRows = (() => {
+    type ThreadRow = { thread: ThreadSummary; depth: number };
+    const groups: Array<{
+      pinTime: number;
+      workspaceId: string;
+      rows: ThreadRow[];
+    }> = [];
+
+    workspaces.forEach((workspace) => {
+      const threads = threadsByWorkspace[workspace.id] ?? [];
+      if (!threads.length) {
+        return;
+      }
+      const { pinnedRows } = getThreadRows(
+        threads,
+        true,
+        workspace.id,
+        getPinTimestamp,
+      );
+      if (!pinnedRows.length) {
+        return;
+      }
+      let currentRows: ThreadRow[] = [];
+      let currentPinTime: number | null = null;
+
+      pinnedRows.forEach((row) => {
+        if (row.depth === 0) {
+          if (currentRows.length && currentPinTime !== null) {
+            groups.push({
+              pinTime: currentPinTime,
+              workspaceId: workspace.id,
+              rows: currentRows,
+            });
+          }
+          currentRows = [row];
+          currentPinTime = getPinTimestamp(workspace.id, row.thread.id);
+        } else {
+          currentRows.push(row);
+        }
+      });
+
+      if (currentRows.length && currentPinTime !== null) {
+        groups.push({
+          pinTime: currentPinTime,
+          workspaceId: workspace.id,
+          rows: currentRows,
+        });
+      }
+    });
+
+    return groups
+      .sort((a, b) => a.pinTime - b.pinTime)
+      .flatMap((group) =>
+        group.rows.map((row) => ({
+          ...row,
+          workspaceId: group.workspaceId,
+        })),
+      );
+  })();
+
   const worktreesByParent = useMemo(() => {
     const worktrees = new Map<string, WorkspaceInfo[]>();
     workspaces
@@ -208,6 +269,23 @@ export function Sidebar({
         ref={sidebarBodyRef}
       >
         <div className="workspace-list">
+          {pinnedThreadRows.length > 0 && (
+            <div className="pinned-section">
+              <div className="workspace-group-header">
+                <div className="workspace-group-label">Pinned</div>
+              </div>
+              <PinnedThreadList
+                rows={pinnedThreadRows}
+                activeWorkspaceId={activeWorkspaceId}
+                activeThreadId={activeThreadId}
+                threadStatusById={threadStatusById}
+                getThreadTime={getThreadTime}
+                isThreadPinned={isThreadPinned}
+                onSelectThread={onSelectThread}
+                onShowThreadMenu={showThreadMenu}
+              />
+            </div>
+          )}
           {groupedWorkspaces.map((group) => {
             const groupId = group.id;
             const isGroupCollapsed = Boolean(
@@ -229,7 +307,6 @@ export function Sidebar({
                   const isCollapsed = entry.settings.sidebarCollapsed;
                   const isExpanded = expandedWorkspaces.has(entry.id);
                   const {
-                    pinnedRows,
                     unpinnedRows,
                     totalRoots: totalThreadRoots,
                   } = getThreadRows(
@@ -325,7 +402,7 @@ export function Sidebar({
                       {showThreads && (
                         <ThreadList
                           workspaceId={entry.id}
-                          pinnedRows={pinnedRows}
+                          pinnedRows={[]}
                           unpinnedRows={unpinnedRows}
                           totalThreadRoots={totalThreadRoots}
                           isExpanded={isExpanded}
