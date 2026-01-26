@@ -125,9 +125,12 @@ export function useWorkspaceLaunchScript({
 
   useEffect(() => {
     const pending = pendingRunRef.current;
+    const pendingKey = pending
+      ? `${pending.workspaceId}:${pending.terminalId}`
+      : null;
     if (
       !pending ||
-      !terminalState?.hasSession ||
+      terminalState?.readyKey !== pendingKey ||
       activeTerminalId !== pending.terminalId ||
       activeWorkspace?.id !== pending.workspaceId
     ) {
@@ -139,7 +142,7 @@ export function useWorkspaceLaunchScript({
         setError(err instanceof Error ? err.message : String(err));
       },
     );
-  }, [activeTerminalId, activeWorkspace?.id, terminalState?.hasSession]);
+  }, [activeTerminalId, activeWorkspace?.id, terminalState?.readyKey]);
 
   return {
     launchScript,

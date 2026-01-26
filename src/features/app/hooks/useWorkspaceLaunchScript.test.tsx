@@ -23,6 +23,7 @@ const terminalState: TerminalSessionState = {
   message: "",
   containerRef: { current: null },
   hasSession: false,
+  readyKey: null,
   cleanupTerminalSession: vi.fn(),
 };
 
@@ -96,7 +97,7 @@ describe("useWorkspaceLaunchScript", () => {
 
     rerender({
       activeWorkspace: workspaceWithScript,
-      terminalState: { ...terminalState, hasSession: true },
+      terminalState: { ...terminalState, hasSession: true, readyKey: "workspace-1:launch" },
       activeTerminalId: "launch",
     });
 
