@@ -106,6 +106,7 @@ export type AppSettings = {
   composerModelShortcut: string | null;
   composerAccessShortcut: string | null;
   composerReasoningShortcut: string | null;
+  composerCollaborationShortcut: string | null;
   newAgentShortcut: string | null;
   newWorktreeAgentShortcut: string | null;
   newCloneAgentShortcut: string | null;
@@ -209,12 +210,24 @@ export type GitFileStatus = {
 export type GitFileDiff = {
   path: string;
   diff: string;
+  isBinary?: boolean;
+  isImage?: boolean;
+  oldImageData?: string | null;
+  newImageData?: string | null;
+  oldImageMime?: string | null;
+  newImageMime?: string | null;
 };
 
 export type GitCommitDiff = {
   path: string;
   status: string;
   diff: string;
+  isBinary?: boolean;
+  isImage?: boolean;
+  oldImageData?: string | null;
+  newImageData?: string | null;
+  oldImageMime?: string | null;
+  newImageMime?: string | null;
 };
 
 export type GitLogEntry = {
