@@ -688,10 +688,59 @@ export function WorkspaceHome({
         </div>
         {collaborationModes.length > 0 && (
           <div className="composer-select-wrap workspace-home-control">
+            <div className="open-app-button">
+              <span className="composer-icon" aria-hidden>
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 7h10M7 12h6M7 17h8"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+              <select
+                className="composer-select composer-select--model"
+                aria-label="Collaboration mode"
+                value={selectedCollaborationModeId ?? ""}
+                onChange={(event) =>
+                  onSelectCollaborationMode(event.target.value || null)
+                }
+                disabled={isSubmitting}
+              >
+                {collaborationModes.map((mode) => (
+                  <option key={mode.id} value={mode.id}>
+                    {formatCollaborationModeLabel(mode.label || mode.id)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
+        <div className="composer-select-wrap workspace-home-control">
+          <div className="open-app-button">
             <span className="composer-icon" aria-hidden>
               <svg viewBox="0 0 24 24" fill="none">
                 <path
-                  d="M7 7h10M7 12h6M7 17h8"
+                  d="M8.5 4.5a3.5 3.5 0 0 0-3.46 4.03A4 4 0 0 0 6 16.5h2"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M15.5 4.5a3.5 3.5 0 0 1 3.46 4.03A4 4 0 0 1 18 16.5h-2"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M9 12h6"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M12 12v6"
                   stroke="currentColor"
                   strokeWidth="1.4"
                   strokeLinecap="round"
@@ -699,65 +748,20 @@ export function WorkspaceHome({
               </svg>
             </span>
             <select
-              className="composer-select composer-select--model composer-select--collab"
-              aria-label="Collaboration mode"
-              value={selectedCollaborationModeId ?? ""}
-              onChange={(event) =>
-                onSelectCollaborationMode(event.target.value || null)
-              }
-              disabled={isSubmitting}
+              className="composer-select composer-select--effort"
+              aria-label="Thinking mode"
+              value={selectedEffort ?? ""}
+              onChange={(event) => onSelectEffort(event.target.value)}
+              disabled={isSubmitting || !reasoningSupported}
             >
-              {collaborationModes.map((mode) => (
-                <option key={mode.id} value={mode.id}>
-                  {formatCollaborationModeLabel(mode.label || mode.id)}
+              {reasoningOptions.length === 0 && <option value="">Default</option>}
+              {reasoningOptions.map((effortOption) => (
+                <option key={effortOption} value={effortOption}>
+                  {effortOption}
                 </option>
               ))}
             </select>
           </div>
-        )}
-        <div className="composer-select-wrap workspace-home-control">
-          <span className="composer-icon" aria-hidden>
-            <svg viewBox="0 0 24 24" fill="none">
-              <path
-                d="M8.5 4.5a3.5 3.5 0 0 0-3.46 4.03A4 4 0 0 0 6 16.5h2"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-              />
-              <path
-                d="M15.5 4.5a3.5 3.5 0 0 1 3.46 4.03A4 4 0 0 1 18 16.5h-2"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-              />
-              <path
-                d="M9 12h6"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-              />
-              <path
-                d="M12 12v6"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
-          <select
-            className="composer-select composer-select--effort"
-            aria-label="Thinking mode"
-            value={selectedEffort ?? ""}
-            onChange={(event) => onSelectEffort(event.target.value)}
-            disabled={isSubmitting || !reasoningSupported}
-          >
-            {reasoningOptions.length === 0 && <option value="">Default</option>}
-            {reasoningOptions.map((effortOption) => (
-              <option key={effortOption} value={effortOption}>
-                {effortOption}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 
