@@ -1,5 +1,68 @@
 @import "./themes.css";
 
+/* Windows custom window frame styles */
+@supports (-ms-ime-align: auto) {
+  :root {
+    --titlebar-inset-left: 0px;
+  }
+}
+
+/* Windows platform-specific styles */
+.app.platform-windows {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  background: rgba(18, 18, 22, 0.96);
+}
+
+.app.platform-windows .drag-strip {
+  height: 32px;
+}
+
+.app.platform-windows .sidebar {
+  background: rgba(18, 18, 22, 0.98);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.app.platform-windows .main-topbar {
+  padding-left: 12px;
+}
+
+/* Windows window controls placeholder */
+.app.platform-windows .window-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  -webkit-app-region: no-drag;
+}
+
+.app.platform-windows .window-control-btn {
+  width: 46px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.app.platform-windows .window-control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.app.platform-windows .window-control-btn.close:hover {
+  background: #e81123;
+  color: white;
+}
+
 .app.reduced-transparency {
   --surface-sidebar: rgba(18, 18, 18, 0.92);
   --surface-sidebar-opaque: rgb(18, 18, 18);

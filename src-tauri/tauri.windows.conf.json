@@ -8,15 +8,15 @@
         "minWidth": 360,
         "minHeight": 600,
         "dragDropEnabled": true,
-        "titleBarStyle": "Visible",
-        "hiddenTitle": false,
-        "transparent": false,
-        "devtools": true,
-        "windowEffects": null
+        "decorations": false,
+        "transparent": true,
+        "shadow": true,
+        "devtools": true
       }
     ]
   },
   "bundle": {
-    "createUpdaterArtifacts": false
+    "createUpdaterArtifacts": false,
+    "targets": ["msi", "nsis"]
   }
 }

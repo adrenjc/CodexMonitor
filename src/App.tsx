@@ -115,6 +115,8 @@ import { useCodeCssVars } from "./features/app/hooks/useCodeCssVars";
 import { useAccountSwitching } from "./features/app/hooks/useAccountSwitching";
 import { useNewAgentDraft } from "./features/app/hooks/useNewAgentDraft";
 import { useSystemNotificationThreadLinks } from "./features/app/hooks/useSystemNotificationThreadLinks";
+import { getPlatformClass, isWindowsPlatform } from "./utils/shortcuts";
+import { WindowsControls } from "./features/layout/components/WindowsControls";
 
 const AboutView = lazy(() =>
   import("./features/about/components/AboutView").then((module) => ({
@@ -1750,7 +1752,7 @@ function MainApp() {
   useMenuAcceleratorController({ appSettings, onDebug: addDebugEntry });
   const dropOverlayActive = isWorkspaceDropActive;
   const dropOverlayText = "Drop Project Here";
-  const appClassName = `app ${isCompact ? "layout-compact" : "layout-desktop"}${
+  const appClassName = `app ${getPlatformClass()} ${isCompact ? "layout-compact" : "layout-desktop"}${
     isPhone ? " layout-phone" : ""
   }${isTablet ? " layout-tablet" : ""}${
     reduceTransparency ? " reduced-transparency" : ""
@@ -2281,6 +2283,7 @@ function MainApp() {
       }
     >
       <div className="drag-strip" id="titlebar" data-tauri-drag-region />
+      <WindowsControls />
       <TitlebarExpandControls {...sidebarToggleProps} />
       {shouldLoadGitHubPanelData ? (
         <Suspense fallback={null}>

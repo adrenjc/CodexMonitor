@@ -156,6 +156,23 @@ export function isMacPlatform(): boolean {
   return /Mac|iPhone|iPad|iPod/.test(navigator.platform);
 }
 
+export function isWindowsPlatform(): boolean {
+  if (typeof navigator === "undefined") {
+    return false;
+  }
+  return /Win/.test(navigator.platform);
+}
+
+export function getPlatformClass(): string {
+  if (isMacPlatform()) {
+    return "platform-macos";
+  }
+  if (isWindowsPlatform()) {
+    return "platform-windows";
+  }
+  return "platform-linux";
+}
+
 export function getDefaultInterruptShortcut(): string {
   return isMacPlatform() ? "ctrl+c" : "ctrl+shift+c";
 }
