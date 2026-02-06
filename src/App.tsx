@@ -115,7 +115,7 @@ import { useCodeCssVars } from "./features/app/hooks/useCodeCssVars";
 import { useAccountSwitching } from "./features/app/hooks/useAccountSwitching";
 import { useNewAgentDraft } from "./features/app/hooks/useNewAgentDraft";
 import { useSystemNotificationThreadLinks } from "./features/app/hooks/useSystemNotificationThreadLinks";
-import { getPlatformClass, isWindowsPlatform } from "./utils/shortcuts";
+import { getPlatformClass } from "./utils/shortcuts";
 import { WindowsControls } from "./features/layout/components/WindowsControls";
 
 const AboutView = lazy(() =>
